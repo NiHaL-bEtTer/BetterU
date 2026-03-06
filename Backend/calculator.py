@@ -1,46 +1,69 @@
-# calculator.py
-# Handles all nutrition calculations
+import json
 
-def calculate_bmr(weight, height, age, sex):
-    """
-    Calculate Basal Metabolic Rate using Mifflin-St Jeor Equation
-    weight in kg, height in cm, age in years, sex 'male'/'female'
-    """
-    if sex.lower() == "male":
-        return 10 * weight + 6.25 * height - 5 * age + 5
-    else:
-        return 10 * weight + 6.25 * height - 5 * age - 161
+# --- Load foods database ---
 
-def calculate_tdee(bmr, activity_factor):
-    """
-    Total Daily Energy Expenditure
-    activity_factor: sedentary=1.2, light=1.375, moderate=1.55, active=1.725, very_active=1.9
-    """
-    return bmr * activity_factor
+    
 
-def adjust_calories(tdee, goal):
-    """
-    Adjust calories based on goal: bulk/cut/maintain
-    """
-    if goal.lower() == "bulk":
-        return tdee + 400  # +300-500 kcal typical
-    elif goal.lower() == "cut":
-        return tdee - 400
-    else:
-        return tdee  # maintain
+def load_foods():
+    with open("Backend/foods.json", "r") as file:
+        return json.load(file)
 
-def calculate_macros(calories, protein_per_kg, weight):
+# --- Calculate total macros for multiple foods ---
+def calculate_total(food_entries, foods):
     """
-    Calculate protein, fat, carb grams based on total calories and protein/kg
+    food_entries: list of tuples (food_name, grams)
+    Returns total macros for all foods.
     """
-    protein_grams = protein_per_kg * weight
-    protein_calories = protein_grams * 4
-    fat_calories = calories * 0.25  # 25% calories from fat
-    fat_grams = fat_calories / 9
-    carb_calories = calories - (protein_calories + fat_calories)
-    carb_grams = carb_calories / 4
-    return {
-        "protein_g": round(protein_grams, 1),
-        "fat_g": round(fat_grams, 1),
-        "carbs_g": round(carb_grams, 1)
+    total = {
+        "Calories": 0,
+        "Protein (g)": 0,
+        "Carbs (g)": 0,
+        "Fat (g)": 0
     }
+    
+    for food_name, grams in food_entries:
+        food_name = food_name.lower()
+        if food_name not in foods:
+            print(f"Warning: '{food_name}' not found in database. Skipping.")
+            continue
+        
+        food = foods[food_name]
+        multiplier = grams / 100
+
+        total["Calories"] += food["calories_per_100g"] * multiplier
+        total["Protein (g)"] += food["protein_per_100g"] * multiplier
+        total["Carbs (g)"] += food["carbs_per_100g"] * multiplier
+        total["Fat (g)"] += food["fat_per_100g"] * multiplier
+
+    # Round totals
+    total = {k: round(v, 2) for k, v in total.items()}
+    return total
+
+# --- Run the food tracker ---
+def run_food_tracker():
+    foods = load_foods()
+    food_entries = []
+
+    print("\n=== Food Tracker ===")
+    print("Enter the foods you ate today (type 'done' when finished)\n")
+
+    while True:
+        food_name = input("Food name: ")
+        if food_name.lower() == "done":
+            break
+
+        try:
+            grams = float(input("Amount in grams: "))
+        except ValueError:
+            print("Please enter a valid number for grams.")
+            continue
+
+        food_entries.append((food_name, grams))
+
+    totals = calculate_total(food_entries, foods)
+
+    print("\n=== TOTAL DAILY MACROS ===")
+    for k, v in totals.items():
+        print(f"{k}: {v}")
+
+    return totals
