@@ -1,19 +1,14 @@
 import json
 
-# --- Load foods database ---
+#load food database
+def load_foods(): #when function is called, return food data
+    with open("Backend/foods.json", "r") as file: #read file
+        return json.load(file) #converts to python dict
 
-    
-
-def load_foods():
-    with open("Backend/foods.json", "r") as file:
-        return json.load(file)
-
-# --- Calculate total macros for multiple foods ---
+#Calculate total macros for food entries
 def calculate_total(food_entries, foods):
-    """
-    food_entries: list of tuples (food_name, grams)
-    Returns total macros for all foods.
-    """
+    #food_entries: list of food name and grams
+    #dict to store totals
     total = {
         "Calories": 0,
         "Protein (g)": 0,
@@ -21,14 +16,14 @@ def calculate_total(food_entries, foods):
         "Fat (g)": 0
     }
     
-    for food_name, grams in food_entries:
-        food_name = food_name.lower()
-        if food_name not in foods:
+    for food_name, grams in food_entries: #loop through food entries
+        food_name = food_name.lower() #prevents case sensitivity issues
+        if food_name not in foods: #checks if food is in db
             print(f"Warning: '{food_name}' not found in database. Skipping.")
             continue
         
-        food = foods[food_name]
-        multiplier = grams / 100
+        food = foods[food_name] #gets food data from db
+        multiplier = grams / 100 
 
         total["Calories"] += food["calories_per_100g"] * multiplier
         total["Protein (g)"] += food["protein_per_100g"] * multiplier
