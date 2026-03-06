@@ -1,6 +1,6 @@
-from calculator import run_food_tracker
+from calculator import run_food_tracker #import food tracker function
 
-# --- Function to generate recommended macros based on profile ---
+#generate recommended macros based on profile
 def generate_macro_goals(profile):
     """
     profile: dict with weight (kg), height (cm), age, gender, activity_level (1-3), goal
@@ -13,7 +13,6 @@ def generate_macro_goals(profile):
     activity_level = int(profile["activity_level"])
     goal = profile["goal"].lower()
 
-    # --- BMR calculation (Mifflin-St Jeor) ---
     if gender == "male":
         bmr = 10 * weight + 6.25 * height - 5 * age + 5
     else:  # female

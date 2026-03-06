@@ -1,13 +1,15 @@
 def calculate_nutrition(weight, height, age, gender, activity_level, goal):
 
-    height_m = height / 100
-    bmi = weight / (height_m ** 2)
+    height_m = height / 100 #converts height to m
+    bmi = weight / (height_m ** 2) #calculates bmi
 
+    #calculates bmr
     if gender.lower() == "male":
         bmr = 10 * weight + 6.25 * height - 5 * age + 5
     else:
         bmr = 10 * weight + 6.25 * height - 5 * age - 161
 
+    #multiplies bmr based on activity level
     activity_multipliers = {
         "sedentary": 1.2,
         "light": 1.375,
@@ -16,6 +18,7 @@ def calculate_nutrition(weight, height, age, gender, activity_level, goal):
         "very active": 1.9
     }
 
+    #adjust calories and sets protein requirements based on user goal
     tdee = bmr * activity_multipliers[activity_level.lower()]
 
     if goal.lower() == "fat loss":
