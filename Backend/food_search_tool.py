@@ -6,7 +6,15 @@ from sentence_transformers import SentenceTransformer
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # connect to your existing ChromaDB
-client = chromadb.PersistentClient(path="Backend/chromadb")
+client = chromadb.PersistentClient(
+    path="D:/AM - GRADE 10/P3-Software-Dev/BetterU/Backend/chromadb"
+)
+
+print("Using DB path:", client.get_settings().persist_directory)
+
+print("Collections:")
+for col in client.list_collections():
+    print("-", col.name)
 collection = client.get_collection("foods")
 
 
@@ -14,20 +22,26 @@ def embed_text(text: str):
     return model.encode(text).tolist()
 
 
-def search_foods(query: str, n_results: int = 5):
-    embedding = embed_text(query)
-
+def search_foods(query):
     results = collection.query(
-        query_embeddings=[embedding],
-        n_results=n_results
+        query_embeddings=[embed_text(query)],
+        n_results=3
     )
 
-    documents = results["documents"][0]
-    metadatas = results["metadatas"][0]
-
     foods = []
-    for doc, meta in zip(documents, metadatas):
-        foods.append({"text": doc, "metadata": meta})
+
+    for i in range(len(results["documents"][0])):
+        metadata = results["metadatas"][0][i]
+
+        food = {
+            "name": metadata.get("food_name", "Unknown Food"),
+            "calories": metadata.get("calories", 0),
+            "protein": metadata.get("protein_g", 0),
+            "carbs": metadata.get("carbs_g", 0),
+            "fat": metadata.get("fat_g", 0)
+        }
+
+        foods.append(food)
 
     return foods
 

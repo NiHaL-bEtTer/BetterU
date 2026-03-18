@@ -8,9 +8,9 @@ from tqdm import tqdm
 # PATHS
 # -----------------------------
 
-FOOD_DATA_PATH = r"C:\Users\user\Downloads\BetterU\Data\foodsList.json"
+FOOD_DATA_PATH = r"D:\AM - GRADE 10\P3-Software-Dev\BetterU\Data\foods.json"
 
-CHROMA_DB_PATH = r"C:\Users\user\Downloads\BetterU\Backend\chromadb"
+CHROMA_DB_PATH = r"D:\AM - GRADE 10\P3-Software-Dev\BetterU\Backend\chromadb"
 
 COLLECTION_NAME = "foods"
 
