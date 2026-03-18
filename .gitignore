@@ -1,0 +1,5 @@
+# ChromaDB / vector DB storage
+chroma/
+chromadb/
+*.chroma/
+*.chromadb/
