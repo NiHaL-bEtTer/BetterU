@@ -1,0 +1,18 @@
+http://127.0.0.1:8000 is the thing to open 
+
+injest.py is best for creating crombadb
+
+
+# BetterU Backend
+
+## Setup
+1. Install dependencies: `pip install -r requirements.txt`
+2. Make sure Ollama is running with your model: `ollama pull llama3`
+3. Run ingest: `python injest.py`
+4. Start server: `cd Backend && python -m uvicorn app:app --reload`
+5. Open `http://127.0.0.1:8000`
+
+## Requirements
+- Python 3.10+
+- Ollama running locally
+- nomic-embed-text pulled: `ollama pull nomic-embed-text`

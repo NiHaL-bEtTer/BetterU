@@ -3,3 +3,7 @@ chroma/
 chromadb/
 *.chroma/
 *.chromadb/
+chromadb/
+__pycache__/
+*.pyc
+.env
