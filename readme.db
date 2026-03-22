@@ -16,3 +16,19 @@ injest.py is best for creating crombadb
 - Python 3.10+
 - Ollama running locally
 - nomic-embed-text pulled: `ollama pull nomic-embed-text`
+
+
+
+cd C:\Users\user\Downloads\BetterU\Backend
+python -m uvicorn app:app --reload
+```
+
+**3. Open browser:**
+```
+http://127.0.0.1:8000
+
+
+
+
+reload app
+python -m uvicorn app:app --reload

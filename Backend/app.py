@@ -23,7 +23,7 @@ from calculator_tool import nutrition_calculator_tool
 # ── Config ────────────────────────────────────────────────────────────────
 
 EMBED_MODEL = "nomic-embed-text"
-CHAT_MODEL  = "llama3"
+CHAT_MODEL  = "phi3"
 N_RESULTS   = 6
 
 # ── ChromaDB ──────────────────────────────────────────────────────────────
@@ -56,9 +56,7 @@ def profile_page():
 
 # ── Schemas ───────────────────────────────────────────────────────────────
 
-class ChatRequest(BaseModel):
-    message: str
-    history: list = []
+
 
 class UserProfile(BaseModel):
     age:      int   = Field(..., ge=10,  le=100)
@@ -68,25 +66,15 @@ class UserProfile(BaseModel):
     activity: str   = Field(...)
     goal:     str   = Field(...)
 
-    @validator("sex")
-    def sex_valid(cls, v):
-        if v.lower() not in ("male", "female"):
-            raise ValueError("sex must be 'male' or 'female'")
-        return v.lower()
 
-    @validator("activity")
-    def activity_valid(cls, v):
-        valid = {"sedentary", "light", "moderate", "active", "very_active"}
-        if v.lower() not in valid:
-            raise ValueError(f"activity must be one of: {', '.join(sorted(valid))}")
-        return v.lower()
+class ChatRequest(BaseModel):
+    message: str
+    history: list = []
+    profile: Optional[UserProfile] = None
+    calc_results: Optional[dict] = None
 
-    @validator("goal")
-    def goal_valid(cls, v):
-        valid = {"bulk", "maintain", "cut"}
-        if v.lower() not in valid:
-            raise ValueError(f"goal must be one of: {', '.join(sorted(valid))}")
-        return v.lower()
+
+   
 
 class NutribotRequest(BaseModel):
     message: str
@@ -114,6 +102,37 @@ Always answer using the retrieved food data provided to you.
 Be concise. Use bullet points for lists. If the user asks for a meal plan,
 suggest specific foods from the data.
 If something isn't in the retrieved data, say so honestly."""
+
+def build_system_prompt(profile=None, calc_results=None):
+    base = RAG_SYSTEM_PROMPT
+    if profile:
+        base += f"""
+
+The user's profile:
+- Age: {profile.age}, Sex: {profile.sex}
+- Weight: {profile.weight}kg, Height: {profile.height}cm
+- Goal: {profile.goal}, Activity: {profile.activity}"""
+
+    if calc_results:
+        base += f"""
+
+The user's calculated targets (from calculator.py — use ONLY these numbers, never recalculate):
+- BMI: {calc_results.get('bmi')}
+- BMR: {round(calc_results.get('bmr', 0))} kcal/day
+- TDEE: {round(calc_results.get('tdee', 0))} kcal/day
+- Target Calories: {round(calc_results.get('recommended_calories', 0))} kcal/day
+- Protein: {round(calc_results.get('macros', {}).get('protein_g', 0))}g/day
+- Carbs: {round(calc_results.get('macros', {}).get('carbs_g', 0))}g/day
+- Fat: {round(calc_results.get('macros', {}).get('fat_g', 0))}g/day
+
+CRITICAL: Never recalculate or estimate these numbers yourself. Always refer to the values above."""
+    elif profile:
+        base += """
+
+No calculator results available yet. If the user asks about their personal targets,
+tell them to hit Calculate on the Profile page first."""
+
+    return base
 
 CALCULATOR_SYSTEM_PROMPT = """You are NutriBot, a knowledgeable and friendly nutrition coach for BetterU.
 
@@ -151,7 +170,7 @@ def chat(req: ChatRequest):
         f"{i}. {doc}" for i, doc in enumerate(docs, 1)
     )
 
-    messages = [{"role": "system", "content": RAG_SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": build_system_prompt(req.profile, req.calc_results)}]
     for turn in req.history[-6:]:
         messages.append(turn)
     messages.append({

@@ -10,21 +10,29 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="#" class="logo">
-      <div class="logo-icon">🌿</div>
-      BetterU
-    </a>
-    <div class="nav-links">
-      <a href="index.html">About Us</a>
-      <a href="team.html">Our Team</a>
-      <a href="chat.html" class="active">Chat</a>
-      <a href="profile.html" style="color:#111;font-weight:700;">My Profile</a>
-    </div>
-    <a href="index.html" class="btn-primary">Get Started Free</a>
-  </div>
+<header class="navbar">
+
+<div class="nav-container">
+
+<a href="#home" class="logo">
+<img src="assets/leaf.svg" alt="BetterU logo">
+<span>BetterU</span>
+</a>
+
+<nav class="nav-links">
+
+<a href="about.html">About Us</a>
+<a href="team.html">Our Team</a>
+<a href="chat.html">Chat</a>
+<a href="profile.html" style="color:#111;font-weight:700;">My Profile</a>
+
 </nav>
+
+<a href="cta.html" class="btn-primary">Get Started Free</a>
+
+</div>
+
+</header>
 
 <!-- Page -->
 <div id="app">
@@ -46,6 +54,8 @@
         <div class="status-dot"></div>
         Online
       </div>
+      <a href="profile.html" id="profile-badge" style="display:none;margin-left:12px;font-size:12px;font-weight:600;color:#15803d;background:#e7f6ec;padding:5px 12px;border-radius:999px;text-decoration:none;"></a>
+      <a href="profile.html" id="no-profile-banner" style="display:none;margin-left:12px;font-size:12px;font-weight:600;color:#92400e;background:#fef3c7;padding:5px 12px;border-radius:999px;text-decoration:none;">⚠ No profile — click to set up</a>
     </div>
 
     <!-- Messages -->
@@ -94,6 +104,26 @@
 
   let history = [];
   let isStreaming = false;
+
+  function getProfile() {
+    try {
+      const saved = sessionStorage.getItem('betterU_profile');
+      return saved ? JSON.parse(saved) : null;
+    } catch(e) { return null; }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const profile = getProfile();
+    if (!profile) {
+      document.getElementById('no-profile-banner').style.display = 'inline-block';
+    } else {
+      const badge = document.getElementById('profile-badge');
+      badge.style.display = 'inline-block';
+      const goal = profile.goal ? profile.goal.charAt(0).toUpperCase() + profile.goal.slice(1) : '';
+      const kcal = profile.results?.recommended_calories ? Math.round(profile.results.recommended_calories) : '?';
+      badge.textContent = `👤 ${goal} · ${kcal} kcal/day`;
+    }
+  });
 
   inputEl.addEventListener('input', () => {
     inputEl.style.height = 'auto';
@@ -162,11 +192,18 @@
 
     let fullText = '';
 
+    
     try {
+      const profileData = getProfile();
       const res = await fetch('http://127.0.0.1:8000/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, history: history.slice(-6) })
+        body: JSON.stringify({
+          message: text,
+          history: history.slice(-6),
+          profile: profileData,
+          calc_results: profileData?.results ?? null
+        })
       });
 
       const reader = res.body.getReader();
