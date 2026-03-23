@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NutriBot — BetterU</title>
+<title>Alden - BetterU</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="chat.css">
+<link rel="stylesheet" href="styles.css"/>
+<link rel="stylesheet" href="chat.css"/>
 </head>
 <body>
 
@@ -39,15 +40,15 @@
   <div class="page-header">
     <div class="badge">AI Nutrition Assistant</div>
     <h1>Ask anything about <span>nutrition</span></h1>
-    <p>Powered by your local food database — 40,000+ foods, instant answers.</p>
+    <p>Powered by your local food database: 40,000+ foods, instant answers.</p>
   </div>
 
   <div class="chat-card">
     <!-- Chat header -->
     <div class="chat-header">
-      <div class="chat-avatar">N</div>
+      <div class="chat-avatar">A</div>
       <div class="chat-header-info">
-        <h3>NutriBot</h3>
+        <h3>Alden</h3>
         <p>Nutrition · Meal Planning · Macro Tracking</p>
       </div>
       <div class="status">
@@ -55,7 +56,7 @@
         Online
       </div>
       <a href="profile.html" id="profile-badge" style="display:none;margin-left:12px;font-size:12px;font-weight:600;color:#15803d;background:#e7f6ec;padding:5px 12px;border-radius:999px;text-decoration:none;"></a>
-      <a href="profile.html" id="no-profile-banner" style="display:none;margin-left:12px;font-size:12px;font-weight:600;color:#92400e;background:#fef3c7;padding:5px 12px;border-radius:999px;text-decoration:none;">⚠ No profile — click to set up</a>
+      <a href="profile.html" id="no-profile-banner" style="display:none;margin-left:12px;font-size:12px;font-weight:600;color:#92400e;background:#fef3c7;padding:5px 12px;border-radius:999px;text-decoration:none;">⚠ No profile - click to set up</a>
     </div>
 
     <!-- Messages -->
@@ -158,7 +159,7 @@
     const wrap = document.createElement('div');
     wrap.className = `msg ${role}`;
     wrap.innerHTML = `
-      <div class="msg-label">${role === 'user' ? 'You' : 'NutriBot'}</div>
+      <div class="msg-label">${role === 'user' ? 'You' : 'Alden'}</div>
       <div class="bubble">${escapeHtml(text)}</div>
     `;
     messagesEl.appendChild(wrap);
@@ -185,7 +186,7 @@
     // Bot bubble
     const botWrap = document.createElement('div');
     botWrap.className = 'msg bot';
-    botWrap.innerHTML = `<div class="msg-label">NutriBot</div><div class="bubble"><span class="cursor"></span></div>`;
+    botWrap.innerHTML = `<div class="msg-label">Alden</div><div class="bubble"><span class="cursor"></span></div>`;
     messagesEl.appendChild(botWrap);
     const bubble = botWrap.querySelector('.bubble');
     scrollBottom();
@@ -202,7 +203,8 @@
           message: text,
           history: history.slice(-6),
           profile: profileData,
-          calc_results: profileData?.results ?? null
+          calc_results: profileData?.results ?? null,
+          user_notes: (typeof localStorage !== 'undefined' && localStorage.getItem('betterU_notes')) || ''
         })
       });
 

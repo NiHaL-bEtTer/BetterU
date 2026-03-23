@@ -3,23 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>My Profile — BetterU</title>
+<title>My Profile - BetterU</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
 <link rel="stylesheet" href="form.css"/>
-<style>
-#results-section {
-  display: none;
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-#results-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-</style>
 </head>
 <body>
 
@@ -47,28 +34,6 @@
 </div>
 
 </header>
-
-<!-- 
-
-
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="logo">
-      <div style="width:30px;height:30px;background:#15803d;border-radius:6px;display:grid;place-items:center;color:white;font-size:16px;">🌿</div>
-      BetterU
-    </a>
-    <div class="nav-links">
-      <a href="index.html">About Us</a>
-      <a href="team.html">Our Team</a>
-      <a href="chat.html">Chat</a>
-      <a href="profile.html" style="color:#111;font-weight:700;">My Profile</a>
-    </div>
-    <a href="index.html" class="btn-primary">Get Started Free</a>
-  </div>
-</nav>
-
-
--->
 
 <!-- Hero -->
 <div class="profile-hero">
@@ -135,11 +100,11 @@
           <div class="select-wrap">
             <select id="activity">
               <option value="" disabled selected>Select your activity level…</option>
-              <option value="sedentary">🪑 Sedentary — little or no exercise</option>
-              <option value="light">🚶 Light — 1–3 days/week</option>
-              <option value="moderate">🏃 Moderate — 3–5 days/week</option>
-              <option value="active">💪 Active — 6–7 days/week</option>
-              <option value="very_active">🔥 Very Active — hard training daily</option>
+              <option value="sedentary">🪑 Sedentary: little or no exercise</option>
+              <option value="light">🚶 Light: 1–3 days/week</option>
+              <option value="moderate">🏃 Moderate: 3–5 days/week</option>
+              <option value="active">💪 Active: 6–7 days/week</option>
+              <option value="very_active">🔥 Very Active: hard training daily</option>
             </select>
           </div>
         </div>
@@ -149,9 +114,9 @@
           <div class="select-wrap">
             <select id="goal">
               <option value="" disabled selected>Select your goal…</option>
-              <option value="bulk">📈 Bulk — build muscle &amp; size</option>
-              <option value="maintain">⚖️ Maintain — keep current weight</option>
-              <option value="cut">📉 Cut — lose fat</option>
+              <option value="bulk">📈 Bulk: build muscle &amp; size</option>
+              <option value="maintain">⚖️ Maintain: keep current weight</option>
+              <option value="cut">📉 Cut: lose fat</option>
             </select>
           </div>
         </div>
@@ -167,6 +132,23 @@
     </div>
 
   </div><!-- /form-grid -->
+
+  <!-- Notes for Alden (saved locally; sent with Chat) -->
+  <div class="form-card notes-card">
+    <div class="form-card-header">
+      <div class="form-card-icon">📝</div>
+      <div>
+        <h2>Notes for Alden</h2>
+        <p>Preferences, foods you love or avoid, and schedule. Added to every chat on this device.</p>
+      </div>
+    </div>
+    <div class="form-card-body">
+      <div class="field" style="margin-bottom:0;">
+        <label for="user-notes">Your notes</label>
+        <textarea id="user-notes" rows="5" placeholder="e.g. vegetarian, prefer high-protein meals, train evenings…"></textarea>
+      </div>
+    </div>
+  </div>
 
   <!-- Results -->
   <div id="results-section">
@@ -185,22 +167,22 @@
         <div class="stats-grid">
           <div class="stat-tile">
             <div class="t-label">BMI</div>
-            <div class="t-value" id="r-bmi">—</div>
-            <div class="t-unit"  id="r-bmi-cat">—</div>
+            <div class="t-value" id="r-bmi">-</div>
+            <div class="t-unit"  id="r-bmi-cat">-</div>
           </div>
           <div class="stat-tile">
             <div class="t-label">BMR</div>
-            <div class="t-value" id="r-bmr">—</div>
+            <div class="t-value" id="r-bmr">-</div>
             <div class="t-unit">kcal / day</div>
           </div>
           <div class="stat-tile">
             <div class="t-label">TDEE</div>
-            <div class="t-value" id="r-tdee">—</div>
+            <div class="t-value" id="r-tdee">-</div>
             <div class="t-unit">kcal / day</div>
           </div>
           <div class="stat-tile highlight">
             <div class="t-label">Target Calories</div>
-            <div class="t-value" id="r-calories">—</div>
+            <div class="t-value" id="r-calories">-</div>
             <div class="t-unit">kcal / day</div>
           </div>
         </div>
@@ -211,7 +193,7 @@
             <div class="macro-icon">🥩</div>
             <div class="macro-info">
               <div class="m-label">Protein</div>
-              <div class="m-value" id="r-protein">—</div>
+              <div class="m-value" id="r-protein">-</div>
               <div class="m-unit">grams / day</div>
             </div>
           </div>
@@ -219,7 +201,7 @@
             <div class="macro-icon">🍚</div>
             <div class="macro-info">
               <div class="m-label">Carbs</div>
-              <div class="m-value" id="r-carbs">—</div>
+              <div class="m-value" id="r-carbs">-</div>
               <div class="m-unit">grams / day</div>
             </div>
           </div>
@@ -227,14 +209,14 @@
             <div class="macro-icon">🥑</div>
             <div class="macro-info">
               <div class="m-label">Fat</div>
-              <div class="m-value" id="r-fat">—</div>
+              <div class="m-value" id="r-fat">-</div>
               <div class="m-unit">grams / day</div>
             </div>
           </div>
         </div>
 
         <div class="chat-cta">
-          <p>Want meal ideas that hit these targets? <strong>Ask NutriBot with your profile already loaded.</strong></p>
+          <p>Want meal ideas that hit these targets? <strong>Ask Alden with your profile already loaded.</strong></p>
           <a href="chat.html">💬 Open Chat →</a>
         </div>
 
@@ -322,7 +304,7 @@
       }
 
       const result = await res.json();
-      // Save to sessionStorage — chat.html reads this to send profile with every message
+      // Save to sessionStorage; chat.html reads this to send profile with every message
       sessionStorage.setItem('betterU_profile', JSON.stringify({ ...data, results: result }));
       displayResults(data, result);
 
@@ -372,8 +354,38 @@
     section.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  const NOTES_KEY = 'betterU_notes';
+  let notesSaveTimer = null;
+
+  function saveUserNotes() {
+    const el = document.getElementById('user-notes');
+    if (!el) return;
+    try {
+      localStorage.setItem(NOTES_KEY, el.value);
+    } catch (e) {}
+  }
+
+  function loadUserNotes() {
+    const el = document.getElementById('user-notes');
+    if (!el) return;
+    try {
+      const raw = localStorage.getItem(NOTES_KEY);
+      if (raw != null) el.value = raw;
+    } catch (e) {}
+  }
+
   // Restore saved profile on page load
   window.addEventListener('DOMContentLoaded', () => {
+    loadUserNotes();
+    const ta = document.getElementById('user-notes');
+    if (ta) {
+      ta.addEventListener('input', () => {
+        clearTimeout(notesSaveTimer);
+        notesSaveTimer = setTimeout(saveUserNotes, 300);
+      });
+      ta.addEventListener('blur', saveUserNotes);
+    }
+
     const saved = sessionStorage.getItem('betterU_profile');
     if (!saved) return;
     try {
